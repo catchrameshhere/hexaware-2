@@ -77,11 +77,147 @@ select employee_id, first_name, last_name from employees
 
 select employee_id as [EMPLOYEEE ID], first_name as FirstName, last_name as LastName from employees
 
+/* odering the data */
+select * from employees order by first_name /* ascending order, if order is not specified*/
+select * from employees order by first_name asc /*ascending order*/
+select * from employees order by first_name desc /*descending order*/
+select * from employees order by salary, first_name, last_name asc
+select * from employees order by hire_date
+select * from employees order by hire_date desc
+
+/* distinct */
+select distinct salary from employees order by salary desc
+select distinct first_name, last_name, salary from employees order by salary desc
+
+/* limiting the rows display*/
+select top 5 * from employees
+select top 5 first_name, salary from employees
+
+select * from employees order by employee_id  offset 3 rows
 
 
+/*where*/
+select first_name, last_name from employees where first_name = 'Lex'
+select first_name, last_name, department_id from employees where department_id = '6'
+
+/*or*/
+select first_name, last_name, department_id from employees where department_id = '6' or department_id = '9'
 
 
+ /*and*/
+select * from employees where first_name = 'john' and last_name='chen'
+
+/*between*/
+select salary from employees
+select salary from employees where salary between 5000 and 10000
+select distinct salary from employees where salary between 5000 and 10000
+
+/*not between*/
+select distinct salary from employees where salary not between 5000 and 10000
+
+/*in*/
+select * from employees where department_id in (9, 6, 10)
+
+/*regular expression ==> like */
+select * from employees
+select * from employees where first_name like 'd%' /*starting with*/
+select * from employees where first_name like '%n' /*ending with*/
+select * from employees where first_name like '%an%' /*in between*/
+select * from employees where first_name like 'D_%'
+select * from employees where first_name like '_an%'
+select * from employees where first_name like '__an%'
+select * from employees where first_name like '___an%'
+select * from employees where first_name like 's%n'
+
+/*null*/
+select * from employees where phone_number is NULL
+select * from employees where phone_number is null
+select * from employees where phone_number is not NULL
+
+/*functions*/
+select * from employees
+select max(salary) from employees
+select min(salary) from employees
+select avg(salary) from employees
+
+select max(salary) from employees where department_id = 6
+select min(salary) from employees where department_id = 6
+select avg(salary) from employees where department_id = 6
 
 
+select * from employees
+select count(*) from employees
+select count(phone_number) from employees
+
+/*group by*/
+select * from employees
+select distinct  job_id, count(job_id) from employees group by job_id
+select job_id, count(job_id) from employees group by job_id
+
+select department_id, count(*) from employees group by department_id
+select department_id, max(salary) from employees group by department_id
+select department_id, avg(salary) from employees group by department_id
 
 
+/*sub queries*/
+select distinct salary from employees order by salary desc
+
+select max(salary) from employees where salary < (select max(salary) from employees)
+
+/*select max(salary) from employees offset 2 rows*/
+
+
+select max(salary) from employees where salary <
+(select max(salary) from employees where salary < (select max(salary) from employees))
+
+/*nth max salary Assignment */
+/*select salary from employees order by salary desc where rownumber = 5*/
+
+
+/*joins*/
+select * from fruits
+select * from baskets
+
+
+/* left join */
+select fruits.fruit_name, baskets.basket_name
+from fruits left join baskets
+on fruits.basket_id = baskets.basket_id
+
+/*right join*/
+select fruits.fruit_name, baskets.basket_name
+from fruits right join baskets
+on fruits.basket_id = baskets.basket_id
+
+/*inner join*/
+select fruits.fruit_name, baskets.basket_name
+from fruits inner join baskets
+on fruits.basket_id = baskets.basket_id
+
+select fruits.fruit_name, baskets.basket_name
+from fruits join baskets
+on fruits.basket_id = baskets.basket_id
+
+
+/*full outer join*/
+select fruits.fruit_name, baskets.basket_name
+from fruits full outer join baskets
+on fruits.basket_id = baskets.basket_id
+
+
+/*self join*/
+select * from employees
+/* self join using join */
+select e.first_name, e.last_name, m.first_name
+from employees e join employees m
+on e.manager_id = m.employee_id
+
+/* self join using inner join */
+select e.first_name, e.last_name, m.first_name
+from employees e inner join employees m
+on e.manager_id = m.employee_id
+
+/* self join using left join */
+select e.first_name, e.last_name, m.first_name
+from employees e left join employees m
+on e.manager_id = m.employee_id
